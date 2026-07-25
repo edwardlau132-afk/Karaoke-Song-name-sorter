@@ -18,6 +18,15 @@
   const fields = ['Number_編號', 'Song_Title_歌名', 'Singer_歌手', 'PinYin_国語拼音', 'Cantonese_粤語拼音', 'Word_Number_字數統計'];
   const inputs = {};
 
+const fields = ['Number_編號', 'Song_Title_歌名', 'Singer_歌手', 'PinYin_国語拼音', 'Cantonese_粤語拼音', 'Word_Number_字數統計'];
+const inputs = {};
+
+fields.forEach(f => {
+  inputs[f] = document.getElementById('search-' + f);
+});
+
+console.log(inputs);
+  
 console.log(inputs);
   
   let allData = [];
