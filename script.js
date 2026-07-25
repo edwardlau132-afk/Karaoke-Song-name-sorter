@@ -23,9 +23,7 @@
 
   let allData = [];
 
-  function setInfo(t) {
-  info.textContent = t;
-}
+const info = document.getElementById('info');
 
   function renderRows(rows) {
     resultsBody.innerHTML = '';
