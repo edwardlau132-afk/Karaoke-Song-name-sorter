@@ -10,10 +10,7 @@
     'Karaoke Songs Search List.xlsx'
   ];
   // ───────────────────────────────────────────────────────────────────
-
-  const fileInput = document.getElementById('file-input');
   const info = document.getElementById('info');
-  const uploadInfo = document.getElementById('upload-info');
   const resultsBody = document.getElementById('results-body');
   const clearBtn = document.getElementById('clear-filters');
 
@@ -27,9 +24,8 @@
   let allData = [];
 
   function setInfo(t) {
-    info.textContent = t;
-    uploadInfo.textContent = t;
-  }
+  info.textContent = t;
+}
 
   function renderRows(rows) {
     resultsBody.innerHTML = '';
