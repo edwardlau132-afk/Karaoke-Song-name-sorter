@@ -85,9 +85,11 @@ console.log(inputs);
 
 
 fields.forEach(f => {
-  inputs[f].addEventListener('input', doSearch);
+  if (inputs[f]) {
+    inputs[f].addEventListener('input', doSearch);
+  }
 });
-
+  
 const clearBtn = document.getElementById('clear-filters');
 
 if (clearBtn) {
