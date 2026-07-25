@@ -1,21 +1,10 @@
 # Excel Searcher - Karaoke Song Name Sorter
 A simple, fast, and beautiful web application to search and filter Excel and CSV files by field-specific queries directly in your browser.
 
-## ✨ Features
-- 📤 **Upload Excel Files** - Support for .xlsx, .xls, and .csv formats
-- 🔍 **Field-Specific Search** - Search within any column header
-- ⚡ **Real-Time Filtering** - Results update instantly as you type
-- 📊 **Live Match Count** - See how many rows match your search
-- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
-- ⚡ **Fast Processing** - All searching happens in your browser (no server needed)
-- 🔒 **Private** - Your data never leaves your device
-- 🎯 **Multi-Field Search** - Search across multiple fields simultaneously
-- 🧹 **Clear Filters** - Reset all searches with one click
-
-## 🚀 Live Demo
+## Usage Site
 Visit: https://edwardlau132-afk.github.io/Karaoke-Song-name-sorter/
 
-## 📝 How to Use
+## How to Use
 
 ### Upload a File
 1. Click on the file input or drag & drop an Excel/CSV file
@@ -34,7 +23,7 @@ Visit: https://edwardlau132-afk.github.io/Karaoke-Song-name-sorter/
 1. Click the "Clear" button to reset all search fields
 2. All data will be displayed again
 
-## 🛠️ How to Set Up on Your Own GitHub Pages
+## How to Set Up on Your Own GitHub Pages
 
 ### Option 1: Fork This Repository
 1. Click the "Fork" button on this repository
@@ -55,25 +44,12 @@ Visit: https://edwardlau132-afk.github.io/Karaoke-Song-name-sorter/
 2. Place the files in the root directory
 3. Your site will be live at `https://yourusername.github.io/`
 
-## 📦 Technologies Used
-- **HTML5** - Structure
-- **CSS3** - Styling with clean, modern design
-- **JavaScript** - Search logic and file handling
-- **XLSX.js** - Excel file parsing
-- **GitHub Pages** - Free hosting
-
-## 🔧 Supported File Formats
+## Supported File Formats
 - **.xlsx** - Modern Excel format
 - **.xls** - Legacy Excel format
 - **.csv** - Comma-separated values
 
-## 📊 Example Files
-You can test with any spreadsheet file. The app works best with files that have:
-- A header row (first row with column names)
-- Data rows below the header
-- Standard table structure
-
-## ❓ FAQ
+## FAQ
 
 **Q: Is my data secure?**
 A: Yes! All processing happens in your browser. No data is sent to any server.
@@ -90,10 +66,10 @@ A: You can copy the table data from your browser, or select and copy from the re
 **Q: How does the search work?**
 A: The search is case-insensitive and uses partial matching. For example, searching "song" will find "Song Name", "My Song", etc.
 
-## 📄 License
+## License
 This project is open source and available for anyone to use and modify.
 
-## 🤝 Contributing
+## Contributing
 Feel free to fork, modify, and improve this project!
 
 ---
