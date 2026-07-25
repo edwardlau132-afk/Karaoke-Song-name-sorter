@@ -142,11 +142,15 @@ function applyData(data) {
   }
 
   allData = data;
+
   fields.forEach(k => {
     if (inputs[k]) {
       inputs[k].disabled = false;
     }
   });
+
+  renderRows(allData);
+}
 
   doSearch();
 }
