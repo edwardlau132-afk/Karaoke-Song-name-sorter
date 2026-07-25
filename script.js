@@ -82,18 +82,12 @@
     };
   }
 
-  const doSearch = debounce(() => {
-    const params = collectParams();
-    const results = filterRows(params);
-    const paramKeys = Object.keys(params);
-    if (paramKeys.length > 0) {
-      setInfo(`${results.length} / ${allData.length} matched`);
-    } else {
-      setInfo(`${allData.length} rows`);
-    }
-    renderRows(results);
-  }, 180);
-
+ const doSearch = debounce(() => {
+  const params = collectParams();
+  const results = filterRows(params);
+  renderRows(results);
+}, 180);
+  
   // Turn an array-of-arrays (first row = header, rest = data) into
   // objects keyed by our fixed field names, using column POSITION.
   function rowsToObjects(rowsArr) {
@@ -129,34 +123,15 @@
 
   // Applies parsed rows to the app state and UI. Shared by manual upload
   // and auto-fetch-from-repo paths.
-  function applyData(data, sourceLabel) {
-    if (!data || data.length === 0) {
-      setInfo('The file appears to be empty');
-      return;
-    }
-    allData = data;
-    fields.forEach(k => inputs[k].disabled = false);
-    setInfo(`Loaded ${data.length} rows${sourceLabel ? ' from ' + sourceLabel : ''}`);
-    doSearch();
+function applyData(data) {
+  if (!data || data.length === 0) {
+    return;
   }
 
-  function uploadFile(file) {
-    setInfo(`Reading ${file.name}...`);
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      try {
-        let data = [];
-        if (file.name.toLowerCase().endsWith('.csv')) {
-          data = parseCSV(e.target.result);
-        } else {
-          data = parseExcel(e.target.result);
-        }
-        applyData(data, file.name);
-      } catch (error) {
-        setInfo('Error reading file: ' + error.message);
-      }
-    };
+  allData = data;
+  fields.forEach(k => inputs[k].disabled = false);
+  doSearch();
+}
 
     reader.onerror = () => setInfo('Error reading file.');
 
