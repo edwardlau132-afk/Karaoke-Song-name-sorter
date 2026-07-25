@@ -98,6 +98,8 @@ if (clearBtn) {
       inputs[f].value = '';
     });
 
+console.log("Search inputs:", inputs);
+    
     renderRows(allData);
   });
 }
