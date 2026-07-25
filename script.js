@@ -10,7 +10,6 @@
     'Karaoke Songs Search List.xlsx'
   ];
   // ───────────────────────────────────────────────────────────────────
-  const info = document.getElementById('info');
   const resultsBody = document.getElementById('results-body');
   const clearBtn = document.getElementById('clear-filters');
 
@@ -22,8 +21,6 @@
   fields.forEach(f => inputs[f] = document.getElementById('search-' + f));
 
   let allData = [];
-
-const info = document.getElementById('info');
 
   function renderRows(rows) {
     resultsBody.innerHTML = '';
