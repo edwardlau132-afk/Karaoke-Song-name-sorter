@@ -86,7 +86,10 @@ console.log(inputs);
 
 fields.forEach(f => {
   if (inputs[f]) {
-    inputs[f].addEventListener('input', doSearch);
+    inputs[f].addEventListener('input', () => {
+      console.log("Searching:", f, inputs[f].value);
+      doSearch();
+    });
   }
 });
   
