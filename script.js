@@ -1,6 +1,19 @@
 // Excel Searcher - fully client-side, field-specific search
 // Reads .xls/.xlsx/.csv entirely in the browser (no backend/server involved).
 (() => {
+  // ── Auto-load config ──────────────────────────────────────────────
+  // If a file with one of these exact names (case-sensitive) exists in
+  // the repo root next to index.html, it will be loaded automatically
+  // when the page opens — no manual upload needed. Listed newest-first,
+  // so the most recent dated file wins if more than one is present.
+  // Add/remove/reorder entries here as you commit new dated versions.
+  const DEFAULT_DATA_FILES = [
+    'Karaoke Songs Search List 20-06-26.xlsx',
+    'Karaoke Songs Search List 18-06-26.xlsx',
+    'Karaoke Songs Search List 17-04-26.xlsx'
+  ];
+  // ───────────────────────────────────────────────────────────────────
+
   const fileInput = document.getElementById('file-input');
   const info = document.getElementById('info');
   const uploadInfo = document.getElementById('upload-info');
@@ -121,6 +134,19 @@
     return rowsToObjects(rowsArr);
   }
 
+  // Applies parsed rows to the app state and UI. Shared by manual upload
+  // and auto-fetch-from-repo paths.
+  function applyData(data, sourceLabel) {
+    if (!data || data.length === 0) {
+      setInfo('The file appears to be empty');
+      return;
+    }
+    allData = data;
+    fields.forEach(k => inputs[k].disabled = false);
+    setInfo(`Loaded ${data.length} rows${sourceLabel ? ' from ' + sourceLabel : ''}`);
+    doSearch();
+  }
+
   function uploadFile(file) {
     setInfo(`Reading ${file.name}...`);
     const reader = new FileReader();
@@ -133,16 +159,7 @@
         } else {
           data = parseExcel(e.target.result);
         }
-
-        if (data.length === 0) {
-          setInfo('The file appears to be empty');
-          return;
-        }
-
-        allData = data;
-        fields.forEach(k => inputs[k].disabled = false);
-        setInfo(`Loaded ${data.length} rows`);
-        doSearch();
+        applyData(data, file.name);
       } catch (error) {
         setInfo('Error reading file: ' + error.message);
       }
@@ -155,6 +172,41 @@
     } else {
       reader.readAsBinaryString(file);
     }
+  }
+
+  // Tries each candidate filename in DEFAULT_DATA_FILES, in order, and
+  // loads the first one that actually exists in the repo. Fails silently
+  // (falls back to "No file uploaded") if none are found — this lets the
+  // page keep working via manual upload even before you've committed a file.
+  async function tryLoadDefaultFile() {
+    for (const name of DEFAULT_DATA_FILES) {
+      try {
+        const res = await fetch(name, { cache: 'no-store' });
+        if (!res.ok) continue;
+
+        let data;
+        if (name.toLowerCase().endsWith('.csv')) {
+          const text = await res.text();
+          data = parseCSV(text);
+        } else {
+          if (typeof XLSX === 'undefined') {
+            setInfo('XLSX library is not loaded. Please refresh the page and try again.');
+            return;
+          }
+          const buf = await res.arrayBuffer();
+          const workbook = XLSX.read(buf, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rowsArr = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+          data = rowsToObjects(rowsArr);
+        }
+
+        applyData(data, name);
+        return; // stop after first successful match
+      } catch (err) {
+        console.warn(`Could not auto-load "${name}":`, err);
+      }
+    }
+    // No default file found — leave the "No file uploaded" state as-is.
   }
 
   // Start with inputs disabled until a file is loaded.
@@ -171,4 +223,7 @@
     if (!f) return;
     uploadFile(f);
   });
+
+  // Attempt to auto-load a spreadsheet already committed to the repo.
+  tryLoadDefaultFile();
 })();
