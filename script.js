@@ -115,6 +115,21 @@
     return rowsToObjects(rowsArr);
   }
 
+function applyData(data) {
+  if (!data || data.length === 0) {
+    return;
+  }
+
+  allData = data;
+  fields.forEach(k => {
+    if (inputs[k]) {
+      inputs[k].disabled = false;
+    }
+  });
+
+  doSearch();
+}
+  
   // Fetches a single file (from the repo) and returns its parsed rows,
   // or null if the file doesn't exist / fails to load.
   async function fetchAndParse(name) {
