@@ -159,19 +159,7 @@
     return null;
   }
 }
-  // ── Auto-load files when page opens ──────────────────────────────
- async function autoLoadFiles() {
-
-  let combinedData = [];
-
-    for (const file of DEFAULT_DATA_FILES) {
-      const data = await fetchAndParse(file);
-
-      if (data) {
-        combinedData = combinedData.concat(data);
-      }
-    }
-
+ 
 // ── Auto-load files when page opens ──────────────────────────────
 async function autoLoadFiles() {
 
