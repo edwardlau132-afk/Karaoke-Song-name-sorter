@@ -174,70 +174,44 @@
   // Fetches a single file (from the repo) and returns its parsed rows,
   // or null if the file doesn't exist / fails to load.
   async function fetchAndParse(name) {
-    try {
-      const res = await fetch(name, { cache: 'no-store' });
-      if (!res.ok) return null;
+  try {
+    console.log("Trying to load:", name);
 
-      if (name.toLowerCase().endsWith('.csv')) {
-        const text = await res.text();
-        return parseCSV(text);
-      } else {
-        if (typeof XLSX === 'undefined') {
-          setInfo('XLSX library is not loaded. Please refresh the page and try again.');
-          return null;
-        }
-        const buf = await res.arrayBuffer();
-        const workbook = XLSX.read(buf, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rowsArr = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
-        return rowsToObjects(rowsArr);
-      }
-    } catch (err) {
-      console.warn(`Could not auto-load "${name}":`, err);
-      return null;
-    }
-  }
-
-  // Fetches every file in DEFAULT_DATA_FILES that actually exists in the
-  // repo and merges all of their rows into one combined dataset. Files
-  // that aren't present are skipped silently. If none are found, the
-  // page stays in "No file uploaded" state and manual upload still works.
-  async function tryLoadDefaultFile() {
-    setInfo('Loading spreadsheets...');
-    const results = await Promise.all(DEFAULT_DATA_FILES.map(fetchAndParse));
-
-    let combined = [];
-    let loadedNames = [];
-    results.forEach((data, i) => {
-      if (data && data.length > 0) {
-        combined = combined.concat(data);
-        loadedNames.push(DEFAULT_DATA_FILES[i]);
-      }
+    const res = await fetch(name, {
+      cache: "no-store"
     });
 
-    if (combined.length === 0) {
-      setInfo('No file uploaded.');
-      return;
+    console.log("Status:", res.status);
+    console.log("URL:", res.url);
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
     }
 
-    applyData(combined, `${loadedNames.length} file${loadedNames.length > 1 ? 's' : ''}`);
+    if (name.toLowerCase().endsWith(".csv")) {
+      const text = await res.text();
+      return parseCSV(text);
+    }
+
+    const buf = await res.arrayBuffer();
+
+    console.log("Downloaded", buf.byteLength, "bytes");
+
+    const workbook = XLSX.read(buf, {
+      type: "array"
+    });
+
+    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    return rowsToObjects(
+      XLSX.utils.sheet_to_json(firstSheet, {
+        header: 1,
+        defval: ""
+      })
+    );
+
+  } catch (err) {
+    console.error(err);
+    return null;
   }
-
-  // Start with inputs disabled until a file is loaded.
-  fields.forEach(k => inputs[k].disabled = true);
-
-  fields.forEach(k => inputs[k].addEventListener('input', () => doSearch()));
-  clearBtn.addEventListener('click', () => {
-    fields.forEach(k => inputs[k].value = '');
-    doSearch();
-  });
-
-  fileInput.addEventListener('change', (ev) => {
-    const f = ev.target.files && ev.target.files[0];
-    if (!f) return;
-    uploadFile(f);
-  });
-
-  // Attempt to auto-load a spreadsheet already committed to the repo.
-  tryLoadDefaultFile();
-})();
+}
