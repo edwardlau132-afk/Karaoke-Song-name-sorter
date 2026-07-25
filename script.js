@@ -125,7 +125,7 @@ if (clearBtn) {
     if (typeof XLSX === 'undefined') {
       throw new Error('XLSX library is not loaded. Please refresh the page and try again.');
     }
-    const workbook = XLSX.read(binaryData, { type: 'binary' });
+    const workbook = XLSX.read(binaryData, { type: 'array' });
     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
     // header: 1 -> array-of-arrays, so we control the field mapping ourselves
     // instead of relying on the file's actual header text.
