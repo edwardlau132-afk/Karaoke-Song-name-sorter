@@ -86,6 +86,18 @@
 fields.forEach(f => {
   inputs[f].addEventListener('input', doSearch);
 });
+
+const clearBtn = document.getElementById('clear-filters');
+
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    fields.forEach(f => {
+      inputs[f].value = '';
+    });
+
+    renderRows(allData);
+  });
+}
   
   // Turn an array-of-arrays (first row = header, rest = data) into
   // objects keyed by our fixed field names, using column POSITION.
