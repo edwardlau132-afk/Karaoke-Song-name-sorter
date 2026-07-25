@@ -187,10 +187,9 @@ function applyData(data) {
   }
 }
   // ── Auto-load files when page opens ──────────────────────────────
-  async function autoLoadFiles() {
-    setInfo("Loading default files...");
+ async function autoLoadFiles() {
 
-    let combinedData = [];
+  let combinedData = [];
 
     for (const file of DEFAULT_DATA_FILES) {
       const data = await fetchAndParse(file);
@@ -200,12 +199,9 @@ function applyData(data) {
       }
     }
 
-    if (combinedData.length > 0) {
-      applyData(combinedData, "auto-loaded file(s)");
-    } else {
-      setInfo("No default files found. Please upload a file.");
-    }
-  }
+if (combinedData.length > 0) {
+  applyData(combinedData);
+}
 
   // Start automatic loading
   if (document.readyState === "loading") {
