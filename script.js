@@ -20,7 +20,7 @@
   // Fixed column order: 1st column in the file -> code, 2nd -> chinese_title, etc.
   // Mapping is by POSITION, not by header text, since the real file's header
   // row may not literally say "code"/"singer"/etc.
-  const fields = ['code', 'chinese_title', 'singer', 'pinYin', 'cantonese', 'words'];
+  const fields = ['Number_編號', 'Song_Title_歌名', 'Singer_歌手', 'PinYin_国語拼音', 'Cantonese_粤語拼音', 'Word_Number_字數統計'];
   const inputs = {};
   fields.forEach(f => inputs[f] = document.getElementById('search-' + f));
 
