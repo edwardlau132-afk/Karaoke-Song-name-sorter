@@ -236,7 +236,9 @@
     }
   }
 
-  // Start automatic loading after the page is ready
-  window.addEventListener("DOMContentLoaded", () => {
+  // Start automatic loading
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", autoLoadFiles);
+  } else {
     autoLoadFiles();
-  });
+  }
