@@ -2,11 +2,10 @@
 // Reads .xls/.xlsx/.csv entirely in the browser (no backend/server involved).
 (() => {
   // ── Auto-load config ──────────────────────────────────────────────
-  // If a file with one of these exact names (case-sensitive) exists in
-  // the repo root next to index.html, it will be loaded automatically
-  // when the page opens — no manual upload needed. Listed newest-first,
-  // so the most recent dated file wins if more than one is present.
-  // Add/remove/reorder entries here as you commit new dated versions.
+  // Every file in this list that actually exists in the repo root (next
+  // to index.html) will be fetched and merged into one combined dataset
+  // when the page opens — no manual upload needed. Add/remove entries
+  // here as you commit new dated versions.
   const DEFAULT_DATA_FILES = [
     'Karaoke Songs Search List 20-06-26.xlsx',
     'Karaoke Songs Search List 18-06-26.xlsx',
@@ -174,39 +173,56 @@
     }
   }
 
-  // Tries each candidate filename in DEFAULT_DATA_FILES, in order, and
-  // loads the first one that actually exists in the repo. Fails silently
-  // (falls back to "No file uploaded") if none are found — this lets the
-  // page keep working via manual upload even before you've committed a file.
-  async function tryLoadDefaultFile() {
-    for (const name of DEFAULT_DATA_FILES) {
-      try {
-        const res = await fetch(name, { cache: 'no-store' });
-        if (!res.ok) continue;
+  // Fetches a single file (from the repo) and returns its parsed rows,
+  // or null if the file doesn't exist / fails to load.
+  async function fetchAndParse(name) {
+    try {
+      const res = await fetch(name, { cache: 'no-store' });
+      if (!res.ok) return null;
 
-        let data;
-        if (name.toLowerCase().endsWith('.csv')) {
-          const text = await res.text();
-          data = parseCSV(text);
-        } else {
-          if (typeof XLSX === 'undefined') {
-            setInfo('XLSX library is not loaded. Please refresh the page and try again.');
-            return;
-          }
-          const buf = await res.arrayBuffer();
-          const workbook = XLSX.read(buf, { type: 'array' });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          const rowsArr = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
-          data = rowsToObjects(rowsArr);
+      if (name.toLowerCase().endsWith('.csv')) {
+        const text = await res.text();
+        return parseCSV(text);
+      } else {
+        if (typeof XLSX === 'undefined') {
+          setInfo('XLSX library is not loaded. Please refresh the page and try again.');
+          return null;
         }
-
-        applyData(data, name);
-        return; // stop after first successful match
-      } catch (err) {
-        console.warn(`Could not auto-load "${name}":`, err);
+        const buf = await res.arrayBuffer();
+        const workbook = XLSX.read(buf, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rowsArr = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+        return rowsToObjects(rowsArr);
       }
+    } catch (err) {
+      console.warn(`Could not auto-load "${name}":`, err);
+      return null;
     }
-    // No default file found — leave the "No file uploaded" state as-is.
+  }
+
+  // Fetches every file in DEFAULT_DATA_FILES that actually exists in the
+  // repo and merges all of their rows into one combined dataset. Files
+  // that aren't present are skipped silently. If none are found, the
+  // page stays in "No file uploaded" state and manual upload still works.
+  async function tryLoadDefaultFile() {
+    setInfo('Loading spreadsheets...');
+    const results = await Promise.all(DEFAULT_DATA_FILES.map(fetchAndParse));
+
+    let combined = [];
+    let loadedNames = [];
+    results.forEach((data, i) => {
+      if (data && data.length > 0) {
+        combined = combined.concat(data);
+        loadedNames.push(DEFAULT_DATA_FILES[i]);
+      }
+    });
+
+    if (combined.length === 0) {
+      setInfo('No file uploaded.');
+      return;
+    }
+
+    applyData(combined, `${loadedNames.length} file${loadedNames.length > 1 ? 's' : ''}`);
   }
 
   // Start with inputs disabled until a file is loaded.
