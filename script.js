@@ -173,15 +173,29 @@
       }
     }
 
-if (combinedData.length > 0) {
-  applyData(combinedData);
+// ── Auto-load files when page opens ──────────────────────────────
+async function autoLoadFiles() {
+
+  let combinedData = [];
+
+  for (const file of DEFAULT_DATA_FILES) {
+    const data = await fetchAndParse(file);
+
+    if (data) {
+      combinedData = combinedData.concat(data);
+    }
+  }
+
+  if (combinedData.length > 0) {
+    applyData(combinedData);
+  }
 }
 
-  // Start automatic loading
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", autoLoadFiles);
-  } else {
-    autoLoadFiles();
-  }
+// Start automatic loading
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", autoLoadFiles);
+} else {
+  autoLoadFiles();
+}
 
 })();
