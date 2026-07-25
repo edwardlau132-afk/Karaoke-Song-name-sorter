@@ -215,3 +215,28 @@
     return null;
   }
 }
+  // ── Auto-load files when page opens ──────────────────────────────
+  async function autoLoadFiles() {
+    setInfo("Loading default files...");
+
+    let combinedData = [];
+
+    for (const file of DEFAULT_DATA_FILES) {
+      const data = await fetchAndParse(file);
+
+      if (data) {
+        combinedData = combinedData.concat(data);
+      }
+    }
+
+    if (combinedData.length > 0) {
+      applyData(combinedData, "auto-loaded file(s)");
+    } else {
+      setInfo("No default files found. Please upload a file.");
+    }
+  }
+
+  // Start automatic loading after the page is ready
+  window.addEventListener("DOMContentLoaded", () => {
+    autoLoadFiles();
+  });
