@@ -18,7 +18,7 @@
 
   function createSearchFields() {
     searchFieldsContainer.innerHTML = '';
-    inputs.clear();
+    bject.keys(inputs).forEach(k => delete inputs[k]);
     
     if (headers.length === 0) {
       searchFieldsContainer.innerHTML = '<p style="color:#999;">Upload a file to create search fields</p>';
