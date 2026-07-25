@@ -11,7 +11,6 @@
   ];
   // ───────────────────────────────────────────────────────────────────
   const resultsBody = document.getElementById('results-body');
-  const clearBtn = document.getElementById('clear-filters');
 
   // Fixed column order: 1st column in the file -> code, 2nd -> chinese_title, etc.
   // Mapping is by POSITION, not by header text, since the real file's header
