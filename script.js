@@ -7,7 +7,8 @@
   // when the page opens — no manual upload needed. Add/remove entries
   // here as you commit new dated versions.
   const DEFAULT_DATA_FILES = [
-    'karaoke-songs.xlsx'
+    'Karaoke-Song-name-sorter
+.xlsx'
   ];
   // ───────────────────────────────────────────────────────────────────
 
