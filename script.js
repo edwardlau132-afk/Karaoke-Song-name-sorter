@@ -151,9 +151,6 @@ function applyData(data) {
 
   renderRows(allData);
 }
-
-  doSearch();
-}
   
   // Fetches a single file (from the repo) and returns its parsed rows,
   // or null if the file doesn't exist / fails to load.
