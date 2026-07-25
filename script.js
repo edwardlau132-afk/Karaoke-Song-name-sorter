@@ -242,3 +242,5 @@
   } else {
     autoLoadFiles();
   }
+
+})();
