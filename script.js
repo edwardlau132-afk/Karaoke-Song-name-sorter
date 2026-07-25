@@ -7,9 +7,7 @@
   // when the page opens — no manual upload needed. Add/remove entries
   // here as you commit new dated versions.
   const DEFAULT_DATA_FILES = [
-    'Karaoke Songs Search List 20-06-26.xlsx',
-    'Karaoke Songs Search List 18-06-26.xlsx',
-    'Karaoke Songs Search List 17-04-26.xlsx'
+    'Karaoke Songs Search List (Current).xlsx'
   ];
   // ───────────────────────────────────────────────────────────────────
 
