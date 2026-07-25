@@ -58,7 +58,7 @@
 
 <body>
     <main style="max-width:1100px; margin:20px auto; font-family:Arial,Segoe UI,Roboto;">
-        <h1>Karaoke Song List</h1>
+        <h1>Karaoke Song Search 卡拉OK歌曲搜索</h1>
 
         <div class="controls">
             <label>
@@ -71,13 +71,13 @@
 
         <section aria-label="Field searches">
             <div class="field-row">
-                <label>Code<input id="search-code" type="search" placeholder="Search code" /></label>
-                <label>Chinese title<input id="search-chinese_title" type="search"
-                        placeholder="Search chinese_title" /></label>
-                <label>Singer<input id="search-singer" type="search" placeholder="Search singer" /></label>
-                <label>pinYin<input id="search-pinYin" type="search" placeholder="Search pinYin / pinyin" /></label>
-                <label>Cantonese<input id="search-cantonese" type="search" placeholder="Search cantonese" /></label>
-                <label>Words<input id="search-words" type="search" placeholder="Search words" /></label>
+                <label>Number 編號<input id="search-Number_編號" type="search" placeholder="Search Number_編號" /></label>
+                <label>Song Title 歌名<input id="search-Song_Title_歌名" type="search"
+                        placeholder="Search Song_Title_歌名" /></label>
+                <label>Singer 歌手<input id="search-Singer_歌手" type="search" placeholder="Search Singer_歌手" /></label>
+                <label>PinYin 国語拼音<input id="search-PinYin_国語拼音" type="search" placeholder="Search PinYin_国語拼音 / PinYin_国語拼" /></label>
+                <label>Cantonese 粤語拼音<input id="search-Cantonese_粤語拼音" type="search" placeholder="Search Cantonese_粤語拼音" /></label>
+                <label>Song Word Number 字數統計<input id="search-Word_Number_字數統計" type="search" placeholder="Search Word_Number_字數統計" /></label>
                 <button id="clear-filters" style="height:32px;">Clear</button>
             </div>
         </section>
@@ -87,12 +87,12 @@
         <table id="results-table" aria-live="polite">
             <thead>
                 <tr>
-                    <th>code</th>
-                    <th>chinese_title</th>
-                    <th>singer</th>
-                    <th>pinYin</th>
-                    <th>cantonese</th>
-                    <th>words</th>
+                    <th>Number_編號</th>
+                    <th>Song_Title_歌名</th>
+                    <th>Singer_歌手</th>
+                    <th>PinYin_国語拼音</th>
+                    <th>Cantonese_粤語拼音</th>
+                    <th>Word_Number_字數統計</th>
                 </tr>
             </thead>
             <tbody id="results-body">
@@ -104,7 +104,7 @@
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="script.js?v=6"></script>
+    <script src="script.js?v=7"></script>
 </body>
 
 </html>
