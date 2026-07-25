@@ -81,6 +81,11 @@
   const results = filterRows(params);
   renderRows(results);
 }, 180);
+
+
+fields.forEach(f => {
+  inputs[f].addEventListener('input', doSearch);
+});
   
   // Turn an array-of-arrays (first row = header, rest = data) into
   // objects keyed by our fixed field names, using column POSITION.
