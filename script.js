@@ -116,27 +116,6 @@
     return rowsToObjects(rowsArr);
   }
 
-  // Applies parsed rows to the app state and UI. Shared by manual upload
-  // and auto-fetch-from-repo paths.
-function applyData(data) {
-  if (!data || data.length === 0) {
-    return;
-  }
-
-  allData = data;
-  fields.forEach(k => inputs[k].disabled = false);
-  doSearch();
-}
-
-    reader.onerror = () => setInfo('Error reading file.');
-
-    if (file.name.toLowerCase().endsWith('.csv')) {
-      reader.readAsText(file);
-    } else {
-      reader.readAsBinaryString(file);
-    }
-  }
-
   // Fetches a single file (from the repo) and returns its parsed rows,
   // or null if the file doesn't exist / fails to load.
   async function fetchAndParse(name) {
