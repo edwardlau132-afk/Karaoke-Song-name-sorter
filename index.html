@@ -41,6 +41,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 12px;
+            table-layout: fixed;
         }
 
         th,
@@ -48,11 +49,22 @@
             padding: 10px;
             border: 1px solid #eee;
             text-align: left;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         th {
             background: #fafafa;
         }
+
+        /* Fixed proportions so columns don't resize based on which rows
+           happen to be visible (e.g. before vs. during a search). */
+        th:nth-child(1), td:nth-child(1) { width: 9%; }   /* Number */
+        th:nth-child(2), td:nth-child(2) { width: 24%; }  /* Song Title */
+        th:nth-child(3), td:nth-child(3) { width: 24%; }  /* Singer */
+        th:nth-child(4), td:nth-child(4) { width: 17%; }  /* PinYin */
+        th:nth-child(5), td:nth-child(5) { width: 17%; }  /* Cantonese */
+        th:nth-child(6), td:nth-child(6) { width: 9%; }   /* Word Number */
     </style>
 </head>
 
@@ -93,7 +105,7 @@
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=9"></script>
 </body>
 
 </html>
