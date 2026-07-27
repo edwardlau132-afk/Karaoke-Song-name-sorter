@@ -188,7 +188,7 @@ function applyData(data) {
     );
 
   } catch (err) {
-    console.error(err);
+    console.error(`Failed to load "${name}":`, err);
     return null;
   }
 }
@@ -197,17 +197,31 @@ function applyData(data) {
 async function autoLoadFiles() {
 
   let combinedData = [];
+  let anyFailed = false;
 
   for (const file of DEFAULT_DATA_FILES) {
     const data = await fetchAndParse(file);
 
     if (data) {
       combinedData = combinedData.concat(data);
+    } else {
+      anyFailed = true;
     }
   }
 
   if (combinedData.length > 0) {
     applyData(combinedData);
+  } else {
+    resultsBody.innerHTML = '';
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = fields.length;
+    td.style.color = '#b00020';
+    td.textContent = anyFailed
+      ? 'Could not load the data file. Open the browser console (F12) for details, or check that the file name in DEFAULT_DATA_FILES exactly matches the file in the repo.'
+      : 'No data found in the file.';
+    tr.appendChild(td);
+    resultsBody.appendChild(tr);
   }
 }
 
