@@ -18,17 +18,10 @@
   const fields = ['Number_編號', 'Song_Title_歌名', 'Singer_歌手', 'PinYin_国語拼音', 'Cantonese_粤語拼音', 'Word_Number_字數統計'];
   const inputs = {};
 
-const fields = ['Number_編號', 'Song_Title_歌名', 'Singer_歌手', 'PinYin_国語拼音', 'Cantonese_粤語拼音', 'Word_Number_字數統計'];
-const inputs = {};
+  fields.forEach(f => {
+    inputs[f] = document.getElementById('search-' + f);
+  });
 
-fields.forEach(f => {
-  inputs[f] = document.getElementById('search-' + f);
-});
-
-console.log(inputs);
-  
-console.log(inputs);
-  
   let allData = [];
 
   function renderRows(rows) {
@@ -96,7 +89,6 @@ console.log(inputs);
 fields.forEach(f => {
   if (inputs[f]) {
     inputs[f].addEventListener('input', () => {
-      console.log("Searching:", f, inputs[f].value);
       doSearch();
     });
   }
@@ -110,8 +102,6 @@ if (clearBtn) {
       inputs[f].value = '';
     });
 
-console.log("Search inputs:", inputs);
-    
     renderRows(allData);
   });
 }
@@ -169,14 +159,9 @@ function applyData(data) {
   // or null if the file doesn't exist / fails to load.
   async function fetchAndParse(name) {
   try {
-    console.log("Trying to load:", name);
-
     const res = await fetch(name, {
       cache: "no-store"
     });
-
-    console.log("Status:", res.status);
-    console.log("URL:", res.url);
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`);
@@ -188,8 +173,6 @@ function applyData(data) {
     }
 
     const buf = await res.arrayBuffer();
-
-    console.log("Downloaded", buf.byteLength, "bytes");
 
     const workbook = XLSX.read(buf, {
       type: "array"
