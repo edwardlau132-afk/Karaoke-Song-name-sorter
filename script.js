@@ -24,6 +24,11 @@
 
   let allData = [];
 
+  // Rendering thousands of <tr> elements at once (this dataset has 16k+ rows)
+  // is what makes the page feel slow. Cap how many rows we paint, and tell
+  // the person to narrow their search to see more.
+  const MAX_RENDERED_ROWS = 300;
+
   function renderRows(rows) {
     resultsBody.innerHTML = '';
     if (!rows || rows.length === 0) {
@@ -36,8 +41,12 @@
       resultsBody.appendChild(tr);
       return;
     }
+
+    const truncated = rows.length > MAX_RENDERED_ROWS;
+    const rowsToShow = truncated ? rows.slice(0, MAX_RENDERED_ROWS) : rows;
+
     const frag = document.createDocumentFragment();
-    rows.forEach(r => {
+    rowsToShow.forEach(r => {
       const tr = document.createElement('tr');
       fields.forEach(k => {
         const td = document.createElement('td');
@@ -47,6 +56,17 @@
       frag.appendChild(tr);
     });
     resultsBody.appendChild(frag);
+
+    if (truncated) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = fields.length;
+      td.style.color = '#666';
+      td.style.fontStyle = 'italic';
+      td.textContent = `Showing first ${MAX_RENDERED_ROWS} of ${rows.length} matches — keep typing to narrow the results.`;
+      tr.appendChild(td);
+      resultsBody.appendChild(tr);
+    }
   }
 
   function collectParams() {
