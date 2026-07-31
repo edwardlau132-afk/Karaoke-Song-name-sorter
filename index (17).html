@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Karaoke Song Search</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .field-row {
+            display: flex;
+            gap: 2px;
+            flex-wrap: nowrap;
+            align-items: center;
+            margin-bottom: 10px;
+            overflow-x: visible;
+        }
+
+        .field-row label {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 10px;
+            gap: 3px;
+        }
+
+        .field-row input[type="search"] {
+            padding: 3px 5px;
+            width: 120px;
+            font-size: 10px;
+            height: 32px;
+        }
+
+        .controls {
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        /* Toggle for switching between the two datasets */
+        .source-toggle {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .source-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .source-btn.active {
+            background: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        /* Scrollable wrapper so the table can be wider than the screen
+           on phones instead of squishing every column into one character
+           per line. */
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 12px;
+            border: 1px solid #eee;
+        }
+
+        table {
+            width: 95%;
+            max-width: 95%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            padding: 5px 8px;
+            border: 1px solid #eee;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        th {
+            background: #fafafa;
+        }
+
+        /* Minimum widths so columns stay readable; table-layout:auto lets
+           them grow further to fit content, and the wrapper scrolls
+           horizontally instead of squeezing text. */
+        th:nth-child(1), td:nth-child(1) { width: 40px; }   /* Number */
+        th:nth-child(2), td:nth-child(2) { width: 110px; white-space: normal; }  /* Song Title */
+        th:nth-child(3), td:nth-child(3) { width: 110px; white-space: normal; }  /* Singer */
+        th:nth-child(4), td:nth-child(4) { width: 110px; }  /* PinYin */
+        th:nth-child(5), td:nth-child(5) { width: 105px; }  /* Cantonese */
+        th:nth-child(6), td:nth-child(6) { width: 30px; white-space: normal; } /* Word Number */
+
+        @media (max-width: 400px) {
+            main { margin: 12px auto !important; padding: 0 10px; }
+            h1 { font-size: 16px; }
+            .field-row { flex-wrap: wrap; }
+            .field-row input[type="search"] { min-width: 46vw; }
+        }
+    </style>
+</head>
+
+<body>
+    <main style="max-width:1100px; margin:20px auto; font-family:Arial,Segoe UI,Roboto;">
+        <h1>Karaoke Song Search 卡拉OK歌曲搜索</h1>
+
+        <div class="source-toggle">
+            <button type="button" id="btn-source-old" class="source-btn active" data-source="old">Karaoke Songs Search List</button>
+            <button type="button" id="btn-source-new" class="source-btn" data-source="new">Karaoke Songs Search List -2</button>
+        </div>
+
+        <section aria-label="Field searches">
+            <div class="field-row">
+                <label>Song Word Number 字數統計<input id="search-Word_Number_字數統計" type="search" placeholder="Search Word_Number_字數統計" /></label>
+                <label>Song Title 歌名<input id="search-Song_Title_歌名" type="search"
+                        placeholder="Search Song_Title_歌名" /></label>
+                <label>Singer 歌手<input id="search-Singer_歌手" type="search" placeholder="Search Singer_歌手" /></label>
+                <label>PinYin 国語拼音<input id="search-PinYin_国語拼音" type="search" placeholder="Search PinYin_国語拼音 / PinYin_国語拼" /></label>
+                <label>Cantonese 粤語拼音<input id="search-Cantonese_粤語拼音" type="search" placeholder="Search Cantonese_粤語拼音" /></label>
+                <label>Number 編號<input id="search-Number_編號" type="search" placeholder="Search Number_編號" /></label>
+                <button id="clear-filters" style="height:32px;">Clear</button>
+            </div>
+        </section>
+
+        <div class="table-scroll">
+            <table id="results-table" aria-live="polite">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Song_Title</th>
+                        <th>Singer</th>
+                        <th>PinYin</th>
+                        <th>Cantonese</th>
+                        <th>Words</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <tr>
+                        <td colspan="6" style="color:#666">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="script.js?v=11"></script>
+</body>
+
+</html>
